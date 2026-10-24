@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAYFINDER ALS REVIEWER - Moana Reading Comprehension Quest</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Luckiest+Guy&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepocean: '#005F73',
+                        tropicalteal: '#0A9396',
+                        sandgold: '#E9D8A6',
+                        warmorange: '#EE9B00',
+                        deepcoral: '#CA6702',
+                        rustred: '#BB3E03',
+                        barkwood: '#3D2314',
+                        darkocean: '#003845',
+                        lightsand: '#FFFDF5',
+                        hibiscus: '#E76F51',
+                        tefiti: '#2A9D8F'
+                    },
+                    fontFamily: {
+                        heading: ['Luckiest Guy', 'cursive'],
+                        subheading: ['Fredoka', 'sans-serif'],
+                        body: ['Quicksand', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(1.5deg); }
+        }
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-30px); }
+            100% { transform: translateX(0); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(233, 216, 166, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(233, 216, 166, 0.9); }
+        }
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.15); }
+            50% { transform: scale(1); }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-float { animation: floatSlow 4s ease-in-out infinite; }
+        .animate-wave { animation: waveMove 8s ease-in-out infinite; }
+        .animate-heart { animation: heartBeat 1.5s ease-in-out infinite; }
+        .animate-pop { animation: popIn 0.3s ease-out forwards; }
+        .glow-gold { animation: pulseGlow 2.5s infinite; }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 95, 115, 0.4); border-radius: 8px; }
+        ::-webkit-scrollbar-thumb { background: #0A9396; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E9D8A6; }
+
+        .shaking {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
+        }
+
+        .timer-ring-circle {
+            transition: stroke-dashoffset 0.35s linear;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        /* Polynesian Wood Panel Styling */
+        .wood-panel {
+            background-color: #3D2314;
+            background-image: linear-gradient(135deg, rgba(233, 216, 166, 0.05) 0%, rgba(0, 0, 0, 0.2) 100%);
+            border: 3px solid #E9D8A6;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
+        }
+    </style>
+</head>
+<body class="bg-deepocean text-slate-100 font-body min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-sandgold selection:text-deepocean">
+
+    <div class="fixed inset-0 pointer-events-none z-0 opacity-25 overflow-hidden">
+        <svg class="absolute bottom-0 w-[160%] animate-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0 C150,90 350,-40 500,40 C650,120 900,10 1200,40 L1200,120 L0,120 Z" fill="#0A9396"></path>
+        </svg>
+        <svg class="absolute bottom-0 w-[190%] animate-wave opacity-50" style="animation-delay: -4s;" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0 C200,60 400,-20 600,50 C800,110 1000,20 1200,60 L1200,120 L0,120 Z" fill="#E9D8A6"></path>
+        </svg>
+    </div>
+
+    <header class="relative z-20 bg-darkocean/90 backdrop-blur-md border-b-4 border-sandgold px-4 py-3 shadow-xl">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            
+            <!-- Branding Title -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="app.showScreen('welcome')">
+                <div class="w-10 h-10 rounded-full bg-sandgold flex items-center justify-center text-deepocean font-heading text-2xl shadow-md border-2 border-darkocean">
+                    ⛵
+                </div>
+                <div>
+                    <h1 id="appHeaderTitle" class="font-heading text-lg sm:text-xl text-sandgold leading-none">WAYFINDER ALS REVIEWER</h1>
+                    <span id="appHeaderSubtitle" class="text-xs text-tropicalteal font-subheading tracking-wide">Reading Comprehension & Functional Literacy</span>
+                </div>
+            </div>
+
+            <!-- Floating Audio BGM & Modal Controls -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- Audio Controls -->
+                <div class="bg-deepocean/90 border border-sandgold/50 px-3 py-1.5 rounded-2xl flex items-center gap-2 text-xs shadow-lg">
+                    <button id="bgmToggleBtn" onclick="soundManager.toggleBGM()" class="hover:text-sandgold transition font-subheading flex items-center gap-1" title="Toggle 'Awe Awe' BGM Loop">
+                        <span id="bgmStateIcon">🎵</span>
+                        <span id="bgmStateLabel" class="hidden sm:inline font-bold text-sandgold">Awe Awe BGM: OFF</span>
+                    </button>
+                    <input type="range" id="bgmVolSlider" min="0" max="1" step="0.05" value="0.3" oninput="soundManager.setBGMVolume(this.value)" class="w-12 sm:w-20 h-1.5 bg-tropicalteal rounded-lg appearance-none cursor-pointer" title="BGM Volume">
+                </div>
+
+                <button id="soundToggleBtn" onclick="soundManager.toggleMute()" class="p-2 bg-deepocean/90 hover:bg-darkocean rounded-2xl border border-sandgold/50 text-xs flex items-center justify-center shadow-lg" title="Toggle Sound Effects">
+                    <span id="soundIcon">🔊</span>
+                </button>
+
+                <button onclick="app.openLeaderboard()" class="px-3 py-1.5 bg-tropicalteal/30 hover:bg-tropicalteal/50 text-sandgold font-subheading font-bold rounded-2xl border border-sandgold text-xs sm:text-sm shadow-lg transition flex items-center gap-1">
+                    🏆 <span class="hidden sm:inline">Leaderboard</span>
+                </button>
+
+                <button onclick="app.openTeacherStudio()" class="px-3 py-1.5 bg-barkwood hover:bg-rustred text-lightsand font-subheading font-bold rounded-2xl border-2 border-sandgold text-xs sm:text-sm shadow-lg transition flex items-center gap-1">
+                    🗿 <span class="hidden sm:inline">Teacher Studio</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 max-w-7xl mx-auto w-full p-4 flex-grow flex flex-col justify-center">
+
+        <!-- SCREEN 1: WELCOME & CHARACTER PROFILE SELECTION -->
+        <section id="welcomeScreen" class="w-full max-w-3xl mx-auto bg-darkocean/90 border-4 border-sandgold rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md animate-float relative my-auto">
+            <button onclick="app.openTitleSettingsModal()" class="absolute top-4 right-4 text-xs bg-deepocean/90 hover:bg-tropicalteal/40 px-3 py-1 rounded-xl border border-sandgold/50 text-sandgold transition flex items-center gap-1 shadow-md">
+                ⚙️ Title Banner
+            </button>
+
+            <div class="text-center space-y-4">
+                <div class="inline-block bg-deepocean/80 border border-tropicalteal px-4 py-1 rounded-full text-sandgold font-subheading text-xs tracking-wider uppercase shadow-inner">
+                    🌺 <span id="introBadge">Alternative Learning System • DepEd Aligned</span> 🌺
+                </div>
+                
+                <h2 id="displayGameTitle" class="text-3xl sm:text-5xl font-heading text-sandgold drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] tracking-wide leading-tight">
+                    WAYFINDER ALS REVIEWER
+                </h2>
+
+                <p id="displayWelcomeMsg" class="text-lightsand/90 font-subheading text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
+                    Set sail on an educational quest! Practice graph inference, vocabulary in context, and story analysis crafted for ALS learners.
+                </p>
+
+                <!-- Config Options Box -->
+                <div class="wood-panel p-4 sm:p-5 rounded-2xl border-2 border-sandgold/60 max-w-xl mx-auto space-y-4 text-left shadow-xl">
+                    
+                    <!-- Player Name Input -->
+                    <div>
+                        <label class="block text-xs font-subheading text-sandgold uppercase mb-1">Voyager Name</label>
+                        <input type="text" id="playerNameInput" placeholder="Enter your name..." value="ALS Voyager" class="w-full px-4 py-2 rounded-xl bg-deepocean border-2 border-tropicalteal text-lightsand focus:border-sandgold focus:outline-none font-subheading text-sm">
+                    </div>
+
+                    <!-- Character Guide Avatar Selection -->
+                    <div>
+                        <label class="block text-xs font-subheading text-sandgold uppercase mb-1.5">Choose Wayfinder Guide & Avatar Profile</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2" id="characterPickerContainer">
+                            <!-- Rendered dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Tier Selection -->
+                    <div>
+                        <label class="block text-xs font-subheading text-sandgold uppercase mb-1">Select Difficulty Tier</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" onclick="app.setTier('voyagers')" id="tier-voyagers" class="tier-btn py-2 px-1 rounded-xl border-2 border-tropicalteal bg-deepocean text-center text-xs font-subheading hover:bg-darkocean transition">
+                                ⛵ <span class="block font-bold">Voyagers</span>
+                                <span class="text-[10px] text-tropicalteal block">Easy (45s)</span>
+                            </button>
+                            <button type="button" onclick="app.setTier('wayfinders')" id="tier-wayfinders" class="tier-btn py-2 px-1 rounded-xl border-2 border-sandgold bg-sandgold text-deepocean text-center text-xs font-subheading font-bold shadow-md">
+                                🌀 <span class="block">Wayfinders</span>
+                                <span class="text-[10px] block opacity-80">Medium (35s)</span>
+                            </button>
+                            <button type="button" onclick="app.setTier('chiefs')" id="tier-chiefs" class="tier-btn py-2 px-1 rounded-xl border-2 border-hibiscus bg-deepocean text-center text-xs font-subheading hover:bg-darkocean transition">
+                                👑 <span class="block font-bold">Chiefs</span>
+                                <span class="text-[10px] text-hibiscus block">Hard (25s)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next to Briefing Slide Button -->
+                <button onclick="app.showScreen('briefing')" class="w-full max-w-md py-3.5 bg-gradient-to-r from-sandgold via-warmorange to-sandgold hover:from-warmorange hover:to-sandgold text-barkwood font-heading text-xl sm:text-2xl rounded-2xl shadow-2xl transform active:scale-95 transition border-2 border-lightsand glow-gold uppercase tracking-wider">
+                    📜 Quest Briefing & Skills ➔
+                </button>
+            </div>
+        </section>
+
+        <!-- NEW SCREEN 1.5: WAYFINDER THEME BRIEFING & INSTRUCTIONS SLIDE -->
+        <section id="briefingScreen" class="hidden w-full max-w-3xl mx-auto bg-darkocean/95 border-4 border-sandgold rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md animate-float relative my-auto space-y-4">
+            
+            <div class="text-center space-y-2">
+                <div class="inline-block bg-tropicalteal/30 border border-sandgold/50 px-3 py-1 rounded-full text-sandgold font-subheading text-xs uppercase tracking-wider">
+                    ⛵ The Wayfinder Theme & Navigation Protocol
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-heading text-sandgold">
+                    HOW TO COMPLETE THE READING QUEST
+                </h2>
+                <p class="text-xs sm:text-sm text-lightsand/90 font-subheading max-w-lg mx-auto">
+                    Ancient wayfinders read the ocean stars, swells, and winds to navigate islands. As an ALS Voyager, you will navigate through functional reading tasks to reach mastery!
+                </p>
+            </div>
+
+            <!-- 3 Target Skills Breakdown Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="wood-panel p-3.5 rounded-2xl border border-sandgold/50 space-y-1.5 text-left">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🔤</span>
+                        <h3 class="font-subheading font-bold text-sandgold text-xs sm:text-sm">1. Vocabulary in Context</h3>
+                    </div>
+                    <p class="text-[11px] text-lightsand/80 leading-relaxed font-body">
+                        Decode unfamiliar terms by looking at nearby context clues inside the community passages and notices.
+                    </p>
+                </div>
+
+                <div class="wood-panel p-3.5 rounded-2xl border border-sandgold/50 space-y-1.5 text-left">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">📊</span>
+                        <h3 class="font-subheading font-bold text-sandgold text-xs sm:text-sm">2. Graph & Text Inference</h3>
+                    </div>
+                    <p class="text-[11px] text-lightsand/80 leading-relaxed font-body">
+                        Analyze community tables, fish catch charts, and numerical survey data to draw accurate logical conclusions.
+                    </p>
+                </div>
+
+                <div class="wood-panel p-3.5 rounded-2xl border border-sandgold/50 space-y-1.5 text-left">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">📖</span>
+                        <h3 class="font-subheading font-bold text-sandgold text-xs sm:text-sm">3. Story Analysis</h3>
+                    </div>
+                    <p class="text-[11px] text-lightsand/80 leading-relaxed font-body">
+                        Identify main ideas, underlying themes, character motives, and ecological solutions across stories.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Rules & Teacher Score Monitoring Information Box -->
+            <div class="bg-deepocean/90 border-2 border-tropicalteal/50 p-4 rounded-2xl text-xs font-subheading space-y-2 text-left">
+                <div class="font-bold text-sandgold flex items-center justify-between">
+                    <span>💡 Voyage Rules & Teacher Monitoring:</span>
+                    <span class="bg-barkwood text-sandgold px-2 py-0.5 rounded text-[10px] uppercase border border-sandgold/40">Limited Hint Allowance</span>
+                </div>
+                <ul class="list-disc list-inside space-y-1 text-lightsand/90 text-[11px] leading-relaxed">
+                    <li><strong>Limited Hints:</strong> Maui's Fishhook Hints are strictly limited! You get <strong>1 use per question</strong> and a maximum of <strong>3 total hint uses</strong> per quest. Use them wisely!</li>
+                    <li><strong>Heart Protection:</strong> You start with 3 Hearts. Incorrect choices or timeouts remove 1 Heart.</li>
+                    <li><strong>Teacher Score Tracking:</strong> Teacher Studio records all quest scores, accuracy percentages, and streak records so your teacher can monitor student progress.</li>
+                </ul>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                <button onclick="app.showScreen('welcome')" class="px-5 py-3 bg-deepocean hover:bg-darkocean text-lightsand font-subheading text-sm font-bold rounded-xl border border-sandgold/40 transition">
+                    ⬅️ Back to Settings
+                </button>
+                <button onclick="app.startOdyssey()" class="px-8 py-3 bg-gradient-to-r from-sandgold via-warmorange to-sandgold hover:from-warmorange hover:to-sandgold text-barkwood font-heading text-xl rounded-xl shadow-xl transform active:scale-95 transition border-2 border-lightsand uppercase tracking-wider glow-gold">
+                    🌊 Begin Navigation 🌊
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 2: GAMEPLAY INTERACTION WORKSPACE -->
+        <section id="gameScreen" class="hidden w-full space-y-3 my-auto">
+            <!-- HUD Header Bar -->
+            <div class="bg-darkocean/90 border-2 border-sandgold rounded-2xl p-3 sm:p-4 flex flex-wrap justify-between items-center gap-3 shadow-xl backdrop-blur-sm">
+                
+                <!-- Character Avatar & Player Profile -->
+                <div class="flex items-center space-x-3">
+                    <div id="hudCharacterAvatar" class="w-12 h-12 rounded-full bg-sandgold/30 border-2 border-sandgold flex items-center justify-center text-3xl shadow-md animate-bounce" title="Active Guide Companion">
+                        👩🏽‍🦱
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-1 text-xl animate-heart" id="heartsContainer">
+                            <span>❤️</span><span>❤️</span><span>❤️</span>
+                        </div>
+                        <div class="text-xs">
+                            <span id="hudPlayerName" class="font-bold text-sandgold">ALS Voyager</span>
+                            <span id="hudTierBadge" class="ml-1 text-[10px] px-2 py-0.5 rounded-full bg-sandgold text-deepocean font-bold uppercase">Wayfinders</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Circular Timer & Streak / Score -->
+                <div class="flex items-center space-x-4">
+                    <!-- Circular Countdown Ring -->
+                    <div class="relative w-11 h-11 flex items-center justify-center">
+                        <svg class="w-11 h-11">
+                            <circle class="text-deepocean" stroke-width="4" stroke="currentColor" fill="transparent" r="16" cx="22" cy="22" />
+                            <circle id="timerRing" class="timer-ring-circle text-sandgold" stroke-width="4" stroke-dasharray="100" stroke-dashoffset="0" stroke-linecap="round" stroke="currentColor" fill="transparent" r="16" cx="22" cy="22" />
+                        </svg>
+                        <span id="timerText" class="absolute font-heading text-xs text-sandgold">35</span>
+                    </div>
+
+                    <div class="text-right">
+                        <span class="text-[10px] text-tropicalteal block font-subheading uppercase">Streak</span>
+                        <span id="streakDisplay" class="font-heading text-warmorange text-sm sm:text-base">🔥 0x</span>
+                    </div>
+
+                    <div class="text-right bg-deepocean/90 px-3 py-1 rounded-xl border border-sandgold/40">
+                        <span class="text-[10px] text-tropicalteal block font-subheading uppercase">Score</span>
+                        <span id="scoreDisplay" class="font-heading text-sandgold text-lg sm:text-xl">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="bg-deepocean/80 rounded-full h-2.5 border border-tropicalteal/40 overflow-hidden shadow-inner">
+                <div id="progressBar" class="bg-gradient-to-r from-tropicalteal via-sandgold to-warmorange h-full w-0 transition-all duration-300"></div>
+            </div>
+
+            <!-- Split Panel Workspace -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+                
+                <!-- Left Panel: Reading Passage / Graph Data Display -->
+                <div id="passagePanel" class="lg:col-span-5 wood-panel rounded-2xl p-4 shadow-xl max-h-[420px] overflow-y-auto space-y-3">
+                    <div class="flex justify-between items-center border-b border-sandgold/30 pb-2">
+                        <span class="text-xs font-subheading text-sandgold uppercase tracking-wider flex items-center gap-1">
+                            📖 Passage & Visual Data
+                        </span>
+                        <span id="passageCategory" class="text-[10px] bg-deepocean text-tropicalteal px-2 py-0.5 rounded-md font-bold">
+                            Story Analysis
+                        </span>
+                    </div>
+                    
+                    <h3 id="passageTitle" class="font-subheading font-bold text-lightsand text-sm sm:text-base">
+                        Passage Title
+                    </h3>
+
+                    <div id="passageContent" class="text-xs sm:text-sm text-lightsand/90 leading-relaxed font-body whitespace-pre-line bg-darkocean/80 p-3 rounded-xl border border-tropicalteal/30 font-mono">
+                        Passage or chart content will appear here...
+                    </div>
+                </div>
+
+                <!-- Right Panel: Question & A-D Options -->
+                <div class="lg:col-span-7 bg-darkocean/90 border-2 border-sandgold rounded-2xl p-4 sm:p-5 shadow-xl space-y-3">
+                    
+                    <div class="flex justify-between items-center text-xs font-subheading text-tropicalteal">
+                        <span>Question <span id="currentQNum">1</span> of <span id="totalQNum">10</span></span>
+                        <span id="qCategoryTag" class="bg-deepocean text-sandgold px-2.5 py-0.5 rounded-lg border border-tropicalteal/40">Vocabulary</span>
+                    </div>
+
+                    <!-- Question Prompt -->
+                    <h2 id="questionText" class="text-sm sm:text-lg font-subheading font-bold text-lightsand leading-snug">
+                        Loading question prompt...
+                    </h2>
+
+                    <!-- Maui's Hook Hint System (LIMITED HINTS UPDATE) -->
+                    <div class="bg-deepocean/90 p-2.5 rounded-xl border border-tropicalteal/40 flex flex-wrap justify-between items-center gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🪝</span>
+                            <div>
+                                <span class="text-xs font-subheading text-sandgold block font-bold">
+                                    Maui's Fishhook Hints
+                                </span>
+                                <span id="hintRemainingBadge" class="text-[10px] text-tropicalteal block">
+                                    Quest Hints Left: 3/3
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="hint5050Btn" onclick="app.useHint5050()" class="px-2.5 py-1 bg-darkocean hover:bg-deepocean disabled:opacity-40 rounded-lg text-xs font-subheading text-lightsand border border-tropicalteal transition">
+                                ✂️ 50/50 Chop
+                            </button>
+                            <button id="hintTextBtn" onclick="app.useHintText()" class="px-2.5 py-1 bg-darkocean hover:bg-deepocean disabled:opacity-40 rounded-lg text-xs font-subheading text-lightsand border border-tropicalteal transition">
+                                🌊 Ocean Advice
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Character Speech Bubble Dialogue -->
+                    <div id="characterGuideBox" class="bg-barkwood/90 border border-sandgold/50 p-2.5 rounded-xl flex items-center gap-3 text-xs text-sandgold font-subheading shadow-inner animate-pop">
+                        <span id="guideAvatar" class="text-2xl p-1 bg-darkocean rounded-full border border-tropicalteal">👩🏽‍🦱</span>
+                        <div>
+                            <span id="guideName" class="font-bold text-tropicalteal block">Moana says:</span>
+                            <span id="guideQuote" class="text-lightsand/90 italic">"Trust your wayfinding instincts! Read the passage carefully."</span>
+                        </div>
+                    </div>
+
+                    <!-- Hint Output Box -->
+                    <div id="hintBox" class="hidden bg-deepocean/90 border border-sandgold/60 p-2.5 rounded-xl text-xs text-sandgold font-subheading italic">
+                        💡 <span id="hintBoxText">Ocean Whisper Hint</span>
+                    </div>
+
+                    <!-- Choices A-D -->
+                    <div id="choicesContainer" class="grid grid-cols-1 gap-2">
+                        <!-- Rendered dynamically -->
+                    </div>
+
+                    <!-- Post-Answer Explanation Box -->
+                    <div id="explanationBox" class="hidden p-3 rounded-xl border-2 text-xs font-subheading space-y-1">
+                        <div class="font-bold uppercase text-[11px] tracking-wider" id="explanationResultHeader">Explanation</div>
+                        <p id="explanationText" class="leading-relaxed">Detailed explanation...</p>
+                    </div>
+
+                    <!-- Next Button -->
+                    <button id="nextBtn" onclick="app.nextQuestion()" class="hidden w-full py-3 bg-sandgold hover:bg-yellow-400 text-barkwood font-heading text-base rounded-xl shadow-lg transition transform active:scale-95 uppercase tracking-wider">
+                        Continue Quest ➔
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 3: CELEBRATORY RESULT & REVIEW SCREEN -->
+        <section id="resultScreen" class="hidden w-full max-w-2xl mx-auto bg-darkocean/95 border-4 border-sandgold rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-md text-center space-y-5 my-auto relative">
+            
+            <div class="flex justify-center items-center gap-3">
+                <span class="text-3xl">🌺</span>
+                <span id="resultHeaderIcon" class="text-5xl animate-bounce">⛵</span>
+                <span class="text-3xl">💚</span>
+            </div>
+
+            <!-- Dynamic Character Speech End Speech -->
+            <div id="characterEndSpeech" class="bg-deepocean/90 border-2 border-sandgold/60 p-3.5 rounded-2xl max-w-lg mx-auto flex items-center gap-3 text-left shadow-xl">
+                <div id="resultCharacterAvatar" class="text-3xl bg-darkocean p-2 rounded-full border border-sandgold">👩🏽‍🦱</div>
+                <div>
+                    <span id="resultCharacterTitle" class="text-xs font-bold text-sandgold block uppercase">Moana's Wayfinder Blessing</span>
+                    <p id="resultCharacterSpeech" class="text-xs text-lightsand font-subheading italic">"You restored the Heart of Te Fiti through learning and perseverance!"</p>
+                </div>
+            </div>
+
+            <div>
+                <span id="congratsBadge" class="inline-block bg-sandgold text-deepocean font-heading px-3 py-1 rounded-full text-xs uppercase tracking-wider mb-2">
+                    🎉 Wayfinder Mastery Achieved!
+                </span>
+                <h2 id="resultTitle" class="text-2xl sm:text-4xl font-heading text-sandgold">
+                    Quest Completed!
+                </h2>
+                <p id="resultSubtitle" class="text-lightsand/90 font-subheading text-xs sm:text-sm mt-1">
+                    You navigated through the ALS Reading Comprehension challenges!
+                </p>
+            </div>
+
+            <!-- Stats Card -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-deepocean/90 p-3 rounded-2xl border border-tropicalteal/30">
+                <div class="p-2">
+                    <span class="block text-[10px] text-tropicalteal font-subheading uppercase">Final Score</span>
+                    <span id="resScore" class="font-heading text-xl text-sandgold">0</span>
+                </div>
+                <div class="p-2">
+                    <span class="block text-[10px] text-tropicalteal font-subheading uppercase">Accuracy</span>
+                    <span id="resAccuracy" class="font-heading text-xl text-tropicalteal">0%</span>
+                </div>
+                <div class="p-2">
+                    <span class="block text-[10px] text-tropicalteal font-subheading uppercase">Best Streak</span>
+                    <span id="resStreak" class="font-heading text-xl text-warmorange">🔥 0</span>
+                </div>
+                <div class="p-2">
+                    <span class="block text-[10px] text-tropicalteal font-subheading uppercase">Hearts Left</span>
+                    <span id="resHearts" class="font-heading text-xl text-red-400">❤️❤️❤️</span>
+                </div>
+            </div>
+
+            <!-- Encouragement Panel -->
+            <div class="wood-panel p-3 rounded-2xl text-xs text-lightsand font-subheading leading-relaxed">
+                💬 <span id="resEncouragement">Great job! Practice builds functional reading skills for ALS learners.</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-2 justify-center">
+                <button onclick="app.startOdyssey()" class="px-5 py-2.5 bg-sandgold hover:bg-yellow-400 text-barkwood font-heading text-base rounded-xl shadow-lg transition transform active:scale-95 uppercase">
+                    🔄 Play Again
+                </button>
+                <button onclick="app.openLeaderboard()" class="px-5 py-2.5 bg-tropicalteal hover:bg-teal-400 text-darkocean font-heading text-base rounded-xl shadow-lg transition uppercase">
+                    🏆 Leaderboard
+                </button>
+                <button onclick="app.showScreen('welcome')" class="px-5 py-2.5 bg-deepocean hover:bg-darkocean text-lightsand font-heading text-base rounded-xl shadow-lg transition border border-sandgold/40 uppercase">
+                    🏠 Main Menu
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL 1: LEADERBOARD -->
+    <div id="leaderboardModal" class="fixed inset-0 bg-darkocean/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-darkocean border-4 border-sandgold rounded-3xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-tropicalteal/30 pb-3">
+                <h3 class="font-heading text-xl sm:text-2xl text-sandgold flex items-center gap-2">
+                    🏆 Wayfinder Leaderboard
+                </h3>
+                <button onclick="app.closeLeaderboard()" class="text-lightsand hover:text-hibiscus text-xl font-bold">✕</button>
+            </div>
+
+            <div class="max-h-[60vh] overflow-y-auto space-y-2">
+                <table class="w-full text-left text-xs sm:text-sm font-subheading">
+                    <thead class="bg-deepocean text-sandgold uppercase text-[10px]">
+                        <tr>
+                            <th class="p-2 rounded-l-xl">Rank</th>
+                            <th class="p-2">Guide</th>
+                            <th class="p-2">Voyager</th>
+                            <th class="p-2">Tier</th>
+                            <th class="p-2">Score</th>
+                            <th class="p-2 rounded-r-xl">Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardTbody" class="divide-y divide-tropicalteal/20 text-lightsand">
+                        <!-- Rendered dynamically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex justify-between items-center pt-2 text-xs">
+                <button onclick="app.clearLeaderboard()" class="text-hibiscus hover:underline">Clear Rankings</button>
+                <button onclick="app.closeLeaderboard()" class="px-4 py-2 bg-sandgold hover:bg-yellow-400 text-barkwood font-bold rounded-xl">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: HERO BANNER SETTINGS -->
+    <div id="titleSettingsModal" class="fixed inset-0 bg-darkocean/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="wood-panel rounded-2xl max-w-md w-full p-5 space-y-3 shadow-2xl">
+            <h3 class="font-heading text-lg text-sandgold flex items-center gap-2">
+                ⚙️ Customize Title & Banner
+            </h3>
+            <div class="space-y-2 text-xs font-subheading">
+                <div>
+                    <label class="block text-lightsand mb-1">Game Main Title</label>
+                    <input type="text" id="inputGameTitle" class="w-full p-2 rounded-lg bg-deepocean border border-tropicalteal text-lightsand">
+                </div>
+                <div>
+                    <label class="block text-lightsand mb-1">Header Subtitle</label>
+                    <input type="text" id="inputHeaderSubtitle" class="w-full p-2 rounded-lg bg-deepocean border border-tropicalteal text-lightsand">
+                </div>
+                <div>
+                    <label class="block text-lightsand mb-1">Intro Badge</label>
+                    <input type="text" id="inputIntroBadge" class="w-full p-2 rounded-lg bg-deepocean border border-tropicalteal text-lightsand">
+                </div>
+                <div>
+                    <label class="block text-lightsand mb-1">Welcome Screen Message</label>
+                    <textarea id="inputWelcomeMsg" rows="2" class="w-full p-2 rounded-lg bg-deepocean border border-tropicalteal text-lightsand"></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="app.closeTitleSettingsModal()" class="px-3 py-1.5 bg-deepocean text-lightsand rounded-xl text-xs">Cancel</button>
+                <button onclick="app.saveTitleSettings()" class="px-4 py-1.5 bg-sandgold hover:bg-yellow-400 text-barkwood font-bold rounded-xl text-xs">Save Banner</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: TEACHER STUDIO & SCORE MONITOR -->
+    <div id="teacherStudioModal" class="fixed inset-0 bg-darkocean/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-darkocean border-4 border-sandgold rounded-3xl max-w-5xl w-full h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="bg-barkwood p-3.5 border-b-2 border-sandgold flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🗿</span>
+                    <div>
+                        <h2 class="font-heading text-lg sm:text-xl text-sandgold">Teacher Studio & Score Monitor</h2>
+                        <p class="text-xs text-lightsand/80 font-subheading">Monitor student progress, edit questions, and manage decks without changing designs.</p>
+                    </div>
+                </div>
+                <button onclick="app.closeTeacherStudio()" class="text-lightsand hover:text-hibiscus font-bold text-2xl p-1">✕</button>
+            </div>
+
+            <div class="flex-grow p-4 overflow-y-auto space-y-4 text-xs sm:text-sm font-subheading">
+                
+                <!-- TEACHER SCORE MONITORING DASHBOARD -->
+                <div class="bg-deepocean/90 p-4 rounded-2xl border-2 border-sandgold/40 space-y-3">
+                    <div class="flex justify-between items-center border-b border-sandgold/30 pb-2">
+                        <h3 class="font-heading text-sm text-sandgold flex items-center gap-2">
+                            📊 Learner Performance & Score Monitor
+                        </h3>
+                        <span class="text-[10px] bg-tropicalteal/30 text-sandgold px-2 py-0.5 rounded font-bold">Real-time Tracker</span>
+                    </div>
+
+                    <div id="teacherScoreLogs" class="max-h-40 overflow-y-auto rounded-xl border border-tropicalteal/40">
+                        <table class="w-full text-left bg-darkocean/90 text-xs">
+                            <thead class="bg-barkwood text-sandgold font-subheading uppercase text-[10px]">
+                                <tr>
+                                    <th class="p-2">Learner</th>
+                                    <th class="p-2">Guide</th>
+                                    <th class="p-2">Tier</th>
+                                    <th class="p-2">Score</th>
+                                    <th class="p-2">Accuracy</th>
+                                    <th class="p-2">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teacherScoreTableBody" class="divide-y divide-tropicalteal/20 text-lightsand">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="bg-deepocean/90 p-3 rounded-2xl border border-tropicalteal/40 flex flex-wrap justify-between items-center gap-2">
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="app.exportJSON()" class="px-3 py-1.5 bg-tropicalteal text-darkocean rounded-xl font-bold">📥 Export JSON</button>
+                        <button onclick="app.exportCSV()" class="px-3 py-1.5 bg-tropicalteal text-darkocean rounded-xl font-bold">📊 Export CSV</button>
+                        <label class="px-3 py-1.5 bg-sandgold text-barkwood rounded-xl font-bold cursor-pointer">
+                            📤 Import JSON
+                            <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="app.importFile(event)">
+                        </label>
+                        <button onclick="app.resetDefaultQuestions()" class="px-3 py-1.5 bg-hibiscus text-lightsand rounded-xl font-bold">🔄 Reset Default Deck</button>
+                    </div>
+                </div>
+
+                <!-- Add/Edit Form -->
+                <div class="wood-panel p-4 rounded-2xl border-2 border-sandgold/40 space-y-3">
+                    <h3 class="font-heading text-sm text-sandgold flex items-center justify-between">
+                        <span id="formModeTitle">➕ Add New Question & Passage</span>
+                        <button id="cancelEditBtn" onclick="app.resetQuestionForm()" class="hidden text-xs text-hibiscus underline font-subheading">Cancel Editing</button>
+                    </h3>
+
+                    <input type="hidden" id="editQuestionId">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div>
+                            <label class="block text-lightsand mb-1">Difficulty Tier</label>
+                            <select id="formTier" class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand">
+                                <option value="voyagers">Voyagers (Easy)</option>
+                                <option value="wayfinders">Wayfinders (Medium)</option>
+                                <option value="chiefs">Chiefs (Hard)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-lightsand mb-1">Category</label>
+                            <select id="formCategory" class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand">
+                                <option value="Vocabulary in Context">Vocabulary in Context</option>
+                                <option value="Graph & Text Inference">Graph & Text Inference</option>
+                                <option value="Story Analysis">Story Analysis</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-lightsand mb-1">Passage Title</label>
+                            <input type="text" id="formPassageTitle" placeholder="e.g. Coastal Fishing Data" class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-lightsand mb-1">Reading Passage / Graph ASCII Table</label>
+                        <textarea id="formPassageContent" rows="3" placeholder="Enter passage text or chart data..." class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand font-mono text-xs"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-lightsand mb-1">Question Prompt</label>
+                        <input type="text" id="formQuestionText" placeholder="What can be inferred from the passage?" class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand">
+                    </div>
+
+                    <!-- Choices Inputs -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-lightsand mb-0.5">Option A</label>
+                            <input type="text" id="formOptA" class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand">
+                        </div>
+                        <div>
+                            <label class="block text-lightsand mb-0.5">Option B</label>
+                            <input type="text" id="formOptB" class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand">
+                        </div>
+                        <div>
+                            <label class="block text-lightsand mb-0.5">Option C</label>
+                            <input type="text" id="formOptC" class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand">
+                        </div>
+                        <div>
+                            <label class="block text-lightsand mb-0.5">Option D</label>
+                            <input type="text" id="formOptD" class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-lightsand mb-1">Correct Choice</label>
+                            <select id="formCorrectIndex" class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand">
+                                <option value="0">Option A</option>
+                                <option value="1">Option B</option>
+                                <option value="2">Option C</option>
+                                <option value="3">Option D</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-lightsand mb-1">Maui's Hint</label>
+                            <input type="text" id="formHintText" placeholder="Hint clue..." class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-lightsand mb-1">Explanation</label>
+                        <textarea id="formExplanation" rows="2" placeholder="Explain answer logic..." class="w-full p-2 bg-deepocean rounded-lg border border-tropicalteal text-lightsand"></textarea>
+                    </div>
+
+                    <button onclick="app.saveQuestionFromForm()" class="w-full py-2.5 bg-sandgold hover:bg-yellow-400 text-barkwood font-heading text-sm rounded-xl shadow-lg uppercase tracking-wider">
+                        💾 Save Question to Deck
+                    </button>
+                </div>
+
+                <!-- Deck Table -->
+                <div class="space-y-2">
+                    <h3 class="font-heading text-sm text-sandgold">Current Question Deck (<span id="questionBankCount">0</span>)</h3>
+                    <div class="overflow-x-auto rounded-2xl border border-tropicalteal/40">
+                        <table class="w-full text-left bg-deepocean/90 text-xs">
+                            <thead class="bg-barkwood text-sandgold font-subheading uppercase border-b border-tropicalteal/40">
+                                <tr>
+                                    <th class="p-2.5">Tier</th>
+                                    <th class="p-2.5">Category</th>
+                                    <th class="p-2.5">Question Prompt</th>
+                                    <th class="p-2.5 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="questionTableBody" class="divide-y divide-tropicalteal/20">
+                                <!-- Rendered dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SoundManager {
+            constructor() {
+                this.ctx = null;
+                this.bgmPlaying = false;
+                this.bgmVolume = 0.3;
+                this.muted = false;
+                this.bgmInterval = null;
+                this.noteIndex = 0;
+            }
+
+            initContext() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            toggleBGM() {
+                this.initContext();
+                this.bgmPlaying = !this.bgmPlaying;
+                
+                const btnLabel = document.getElementById('bgmStateLabel');
+                const btnIcon = document.getElementById('bgmStateIcon');
+
+                if (this.bgmPlaying) {
+                    if (btnLabel) btnLabel.innerText = "Awe Awe BGM: ON";
+                    if (btnIcon) btnIcon.innerText = "🎶";
+                    this.startAweAweLoop();
+                } else {
+                    if (btnLabel) btnLabel.innerText = "Awe Awe BGM: OFF";
+                    if (btnIcon) btnIcon.innerText = "🎵";
+                    this.stopAweAweLoop();
+                }
+            }
+
+            setBGMVolume(val) {
+                this.bgmVolume = parseFloat(val);
+            }
+
+            toggleMute() {
+                this.muted = !this.muted;
+                const icon = document.getElementById('soundIcon');
+                if (icon) icon.innerText = this.muted ? "🔇" : "🔊";
+            }
+
+            /* "Awe Awe" (We Know The Way) Polynesian Pentatonic Synth Melody Loop */
+            startAweAweLoop() {
+                if (this.bgmInterval) clearInterval(this.bgmInterval);
+                
+                // C Major Pentatonic Scale frequencies (Awe Awe motif)
+                const melody = [
+                    261.63, 293.66, 329.63, 392.00, 440.00, // C4, D4, E4, G4, A4
+                    523.25, 440.00, 392.00, 329.63, 392.00, // C5, A4, G4, E4, G4
+                    440.00, 523.25, 587.33, 523.25, 440.00  // A4, C5, D5, C5, A4
+                ];
+
+                this.noteIndex = 0;
+                this.bgmInterval = setInterval(() => {
+                    if (!this.bgmPlaying || this.muted || !this.ctx) return;
+                    
+                    const freq = melody[this.noteIndex % melody.length];
+                    this.playSynthNote(freq, 0.3, 'triangle');
+                    
+                    // Rhythmic drone bass pulse
+                    if (this.noteIndex % 4 === 0) {
+                        this.playSynthNote(130.81, 0.6, 'sine', 0.15); // C3 bass
+                    }
+
+                    this.noteIndex++;
+                }, 350);
+            }
+
+            stopAweAweLoop() {
+                if (this.bgmInterval) {
+                    clearInterval(this.bgmInterval);
+                    this.bgmInterval = null;
+                }
+            }
+
+            playSynthNote(freq, duration, type = 'sine', volMult = 1.0) {
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+                    const finalVol = this.bgmVolume * volMult;
+                    gain.gain.setValueAtTime(finalVol, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                } catch(e) {}
+            }
+
+            playClick() {
+                if (this.muted) return;
+                this.initContext();
+                this.playSynthNote(440, 0.08, 'sine', 0.3);
+            }
+
+            playCorrect() {
+                if (this.muted) return;
+                this.initContext();
+                this.playSynthNote(523.25, 0.15, 'triangle', 0.5); // C5
+                setTimeout(() => this.playSynthNote(659.25, 0.25, 'triangle', 0.5), 100); // E5
+            }
+
+            playWrong() {
+                if (this.muted) return;
+                this.initContext();
+                this.playSynthNote(185.00, 0.2, 'sawtooth', 0.4);
+            }
+
+            playHint() {
+                if (this.muted) return;
+                this.initContext();
+                this.playSynthNote(587.33, 0.1, 'sine', 0.4);
+                setTimeout(() => this.playSynthNote(880.00, 0.15, 'sine', 0.4), 80);
+            }
+
+            playVictory() {
+                if (this.muted) return;
+                this.initContext();
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((n, idx) => {
+                    setTimeout(() => this.playSynthNote(n, 0.3, 'triangle', 0.6), idx * 120);
+                });
+            }
+        }
+
+        const soundManager = new SoundManager();
+    </script>
+
+    <script>
+        const DEFAULT_QUESTIONS = [
+            {
+                id: "q_1",
+                tier: "voyagers",
+                category: "Graph & Text Inference",
+                passageTitle: "Barangay Coastal Fish Catch Data (Kg)",
+                passageContent: "Month    | Tilapia | Milkfish (Bangus)\nJan-Feb  | 450 kg  | 300 kg\nMar-Apr  | 600 kg  | 420 kg\nMay-Jun  | 350 kg  | 280 kg\nJul-Aug  | 200 kg  | 180 kg",
+                questionText: "Based on the table, during which period was the total fish harvest highest in the barangay?",
+                options: [
+                    "January - February",
+                    "March - April",
+                    "May - June",
+                    "July - August"
+                ],
+                correctIndex: 1,
+                hintText: "Sum the Tilapia and Bangus harvest totals for each 2-month period.",
+                explanation: "March-April produced 600kg Tilapia + 420kg Bangus = 1,020kg total harvest, which is higher than any other period."
+            },
+            {
+                id: "q_2",
+                tier: "voyagers",
+                category: "Vocabulary in Context",
+                passageTitle: "Community Wayfinding Notice",
+                passageContent: "The village chief advised all fisherfolk to remain prudent during unpredictable ocean storms, ensuring all outrigger canoes are firmly secured.",
+                questionText: "What is the closest meaning of the word 'prudent' as used in the notice?",
+                options: [
+                    "Careful and wise",
+                    "Reckless and loud",
+                    "Fast and impatient",
+                    "Fearful and hidden"
+                ],
+                correctIndex: 0,
+                hintText: "Context clue: 'ensuring canoes are firmly secured' suggests exercising care.",
+                explanation: "'Prudent' means acting with care and wise foresight in practical affairs."
+            },
+            {
+                id: "q_3",
+                tier: "wayfinders",
+                category: "Story Analysis",
+                passageTitle: "The Wayfinder's Compass",
+                passageContent: "Sina watched the horizon closely. Unlike modern navigators who rely strictly on GPS gadgets, her grandfather taught her to read the subtle swell of sea waves, the nesting patterns of frigatebirds, and the rising of the stars. When a dark storm cloud veiled the moon, Sina did not panic; she listened to the rhythm of the tide against the canoe hull.",
+                questionText: "What main theme does the passage highlight regarding traditional wayfinding?",
+                options: [
+                    "Modern technology is superior to traditional methods.",
+                    "Traditional wayfinding relies on deep observation and connection with nature.",
+                    "Sailing at night without GPS is completely impossible.",
+                    "Frigatebirds always lead canoes toward stormy waters."
+                ],
+                correctIndex: 1,
+                hintText: "Notice how Sina reads wave swells, bird patterns, and ocean tides.",
+                explanation: "The text emphasizes how traditional navigators read natural signs (waves, stars, birds) to guide their journey without digital gadgets."
+            },
+            {
+                id: "q_4",
+                tier: "wayfinders",
+                category: "Graph & Text Inference",
+                passageTitle: "Alternative Learning System Enrollment Survey",
+                passageContent: "Community Center Survey (2025):\n- Working Youth Learners: 45%\n- Adult Lifelong Learners: 35%\n- Out-of-School Youth: 20%\nTotal Enrolled Learners = 200",
+                questionText: "How many actual individual learners in the center belong to the 'Working Youth Learners' group?",
+                options: [
+                    "45 learners",
+                    "70 learners",
+                    "90 learners",
+                    "100 learners"
+                ],
+                correctIndex: 2,
+                hintText: "Calculate 45% of 200 total enrolled learners.",
+                explanation: "45% of 200 = 0.45 * 200 = 90 learners."
+            },
+            {
+                id: "q_5",
+                tier: "chiefs",
+                category: "Story Analysis",
+                passageTitle: "Restoring the Island Mangroves",
+                passageContent: "When typhoon waves eroded the shore, the elders recalled how thick mangrove roots once anchored the coastline. A youth volunteer group organized weekend planting drives. Within three years, coastal erosion decreased significantly, and juvenile fish species returned to the estuaries.",
+                questionText: "What can be logically inferred about the mangrove restoration project?",
+                options: [
+                    "Mangroves only benefit fishing boats, not coastal protection.",
+                    "Ecosystem restoration provides both ecological protection and food resource recovery.",
+                    "Planting trees along the shore increases storm wave erosion.",
+                    "Youth volunteers were unable to prevent shoreline damage."
+                ],
+                correctIndex: 1,
+                hintText: "Consider the dual benefits mentioned: decreased erosion AND return of fish species.",
+                explanation: "Reduced erosion protects the coastline (ecological) while returning fish restores food resources (economic/community benefit)."
+            }
+        ];
+    </script>
+
+    <script>
+        class WayfinderApp {
+            constructor() {
+                // Custom Banner State
+                this.customTitle = "WAYFINDER ALS REVIEWER";
+                this.customSubtitle = "Reading Comprehension & Functional Literacy";
+                this.customIntroBadge = "Alternative Learning System • DepEd Aligned";
+                this.customWelcomeMsg = "Set sail on an educational quest! Practice graph inference, vocabulary in context, and story analysis crafted for ALS learners.";
+
+                // Moana Movie Character Guides
+                this.characters = {
+                    moana: {
+                        id: 'moana',
+                        name: 'Moana',
+                        title: 'The Wayfinder',
+                        avatar: '👩🏽‍🦱',
+                        quotes: {
+                            welcome: "The ocean called you to learn! Trust your inner wayfinder.",
+                            correct: "Extraordinary wayfinding! You read the passage perfectly!",
+                            wrong: "The wind shifted! Review the text clues and try again.",
+                            hint: "Look closely at the key words in the passage!",
+                            victory: "You restored the Heart of Te Fiti through learning and perseverance!"
+                        }
+                    },
+                    maui: {
+                        id: 'maui',
+                        name: 'Maui',
+                        title: 'The Demigod',
+                        avatar: '🧔🏽‍♂️',
+                        quotes: {
+                            welcome: "You're welcome! Let Maui help you hook these answers!",
+                            correct: "Chee-hoo! Pure demigod intelligence right there!",
+                            wrong: "Whoa, missed the target! Even demigods learn from mistakes.",
+                            hint: "Maui's fishhook points to elimination of wrong choices!",
+                            victory: "You rocked this quiz! What can I say except you're welcome!"
+                        }
+                    },
+                    pua: {
+                        id: 'pua',
+                        name: 'Pua',
+                        title: 'The Loyal Sidekick',
+                        avatar: '🐷',
+                        quotes: {
+                            welcome: "Oink oink! Pua is cheering for your reading quest!",
+                            correct: "Squeal of joy! You got it completely right!",
+                            wrong: "Oink... Don't worry, Pua believes in you!",
+                            hint: "Sniff out the clue hidden in the passage!",
+                            victory: "Oink oink hooray! You conquered the whole reviewer!"
+                        }
+                    },
+                    heihei: {
+                        id: 'heihei',
+                        name: 'Heihei',
+                        title: 'The Brave Rooster',
+                        avatar: '🐓',
+                        quotes: {
+                            welcome: "Bawk bawk! (Ready to peck at these questions!)",
+                            correct: "Cluck cluck! (A brilliant choice!)",
+                            wrong: "Bawwwk! (Stay focused on the passage!)",
+                            hint: "Bawk! Don't swallow rocks—pick the right option!",
+                            victory: "Bawk bawk chee-hoo! You didn't fall off the boat!"
+                        }
+                    },
+                    tala: {
+                        id: 'tala',
+                        name: 'Gramma Tala',
+                        title: 'Keeper of Legends',
+                        avatar: '👵🏽',
+                        quotes: {
+                            welcome: "Listen to the ocean within your mind, young voyager.",
+                            correct: "Wise choice, my child. The ancestors smile on you.",
+                            wrong: "Sometimes the ocean currents stray, but wisdom remains.",
+                            hint: "Remember the stories and logic taught by the elders.",
+                            victory: "There is nowhere you could go that I won't be with you. Brilliant job!"
+                        }
+                    }
+                };
+
+                this.selectedCharacter = 'moana';
+                this.playerName = "ALS Voyager";
+                this.selectedTier = "wayfinders";
+
+                // Game State
+                this.questions = [];
+                this.activeQuestions = [];
+                this.currentQIndex = 0;
+                this.score = 0;
+                this.hearts = 3;
+                this.streak = 0;
+                this.bestStreak = 0;
+                this.highScore = 0;
+                this.answered = false;
+
+                // LIMITED HINT CONTROLS
+                this.totalQuestHintsRemaining = 3; // Max 3 hints per total quest
+                this.used5050ForCurrentQ = false;
+                this.usedTextHintForCurrentQ = false;
+
+                // Timer
+                this.tierLimits = { voyagers: 45, wayfinders: 35, chiefs: 25 };
+                this.timerSeconds = 35;
+                this.timerInterval = null;
+
+                // Leaderboard
+                this.leaderboard = [];
+
+                this.init();
+            }
+
+            init() {
+                this.loadLocalStorage();
+                this.renderCharacterPicker();
+                this.updateUIBanner();
+                this.showScreen('welcome');
+            }
+
+            loadLocalStorage() {
+                try {
+                    const savedQuestions = localStorage.getItem('wayfinder_questions');
+                    if (savedQuestions) {
+                        this.questions = JSON.parse(savedQuestions);
+                    } else {
+                        this.questions = [...DEFAULT_QUESTIONS];
+                    }
+
+                    const savedLB = localStorage.getItem('wayfinder_leaderboard');
+                    if (savedLB) this.leaderboard = JSON.parse(savedLB);
+
+                    const savedTitle = localStorage.getItem('wayfinder_customTitle');
+                    if (savedTitle) this.customTitle = savedTitle;
+
+                    const savedSub = localStorage.getItem('wayfinder_customSubtitle');
+                    if (savedSub) this.customSubtitle = savedSub;
+                } catch(e) {
+                    this.questions = [...DEFAULT_QUESTIONS];
+                }
+            }
+
+            saveLocalStorage() {
+                try {
+                    localStorage.setItem('wayfinder_questions', JSON.stringify(this.questions));
+                    localStorage.setItem('wayfinder_leaderboard', JSON.stringify(this.leaderboard));
+                    localStorage.setItem('wayfinder_customTitle', this.customTitle);
+                    localStorage.setItem('wayfinder_customSubtitle', this.customSubtitle);
+                } catch(e) {}
+            }
+
+            renderCharacterPicker() {
+                const container = document.getElementById('characterPickerContainer');
+                if (!container) return;
+
+                container.innerHTML = '';
+                Object.values(this.characters).forEach(char => {
+                    const isSelected = char.id === this.selectedCharacter;
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.onclick = () => this.selectCharacter(char.id);
+                    btn.className = `p-2 rounded-xl border-2 text-center transition flex flex-col items-center justify-center ${isSelected ? 'bg-sandgold text-deepocean border-sandgold font-bold shadow-lg scale-105' : 'bg-deepocean hover:bg-darkocean text-lightsand border-tropicalteal/50'}`;
+                    btn.innerHTML = `
+                        <span class="text-2xl">${char.avatar}</span>
+                        <span class="text-xs font-subheading mt-1 leading-tight">${char.name}</span>
+                        <span class="text-[9px] opacity-80">${char.title}</span>
+                    `;
+                    container.appendChild(btn);
+                });
+            }
+
+            selectCharacter(charId) {
+                this.selectedCharacter = charId;
+                this.renderCharacterPicker();
+                soundManager.playClick();
+            }
+
+            setTier(tierKey) {
+                this.selectedTier = tierKey;
+                document.querySelectorAll('.tier-btn').forEach(btn => {
+                    btn.classList.remove('bg-sandgold', 'text-deepocean', 'border-sandgold', 'font-bold');
+                    btn.classList.add('bg-deepocean', 'text-slate-100', 'border-tropicalteal');
+                });
+
+                const activeBtn = document.getElementById(`tier-${tierKey}`);
+                if (activeBtn) {
+                    activeBtn.classList.remove('bg-deepocean');
+                    activeBtn.classList.add('bg-sandgold', 'text-deepocean', 'border-sandgold', 'font-bold');
+                }
+                soundManager.playClick();
+            }
+
+            updateUIBanner() {
+                document.getElementById('appHeaderTitle').innerText = this.customTitle;
+                document.getElementById('appHeaderSubtitle').innerText = this.customSubtitle;
+                document.getElementById('displayGameTitle').innerText = this.customTitle;
+                document.getElementById('displayWelcomeMsg').innerText = this.customWelcomeMsg;
+                document.getElementById('introBadge').innerText = this.customIntroBadge;
+            }
+
+            showScreen(screenId) {
+                document.getElementById('welcomeScreen').classList.add('hidden');
+                document.getElementById('briefingScreen').classList.add('hidden');
+                document.getElementById('gameScreen').classList.add('hidden');
+                document.getElementById('resultScreen').classList.add('hidden');
+
+                if (screenId === 'welcome') document.getElementById('welcomeScreen').classList.remove('hidden');
+                if (screenId === 'briefing') document.getElementById('briefingScreen').classList.remove('hidden');
+                if (screenId === 'game') document.getElementById('gameScreen').classList.remove('hidden');
+                if (screenId === 'result') document.getElementById('resultScreen').classList.remove('hidden');
+            }
+
+            startOdyssey() {
+                const nameInput = document.getElementById('playerNameInput').value.trim();
+                this.playerName = nameInput || "ALS Voyager";
+
+                // Filter questions for tier or default
+                this.activeQuestions = this.questions.filter(q => q.tier === this.selectedTier);
+                if (this.activeQuestions.length === 0) {
+                    this.activeQuestions = [...this.questions];
+                }
+                this.activeQuestions.sort(() => Math.random() - 0.5);
+
+                this.currentQIndex = 0;
+                this.score = 0;
+                this.hearts = 3;
+                this.streak = 0;
+                this.bestStreak = 0;
+                this.totalQuestHintsRemaining = 3; // Reset hints allowance per quest
+
+                this.showScreen('game');
+                this.updateHUD();
+                this.loadCurrentQuestion();
+                soundManager.playClick();
+            }
+
+            updateHUD() {
+                const char = this.characters[this.selectedCharacter];
+                document.getElementById('hudCharacterAvatar').innerText = char.avatar;
+                document.getElementById('hudPlayerName').innerText = this.playerName;
+                document.getElementById('hudTierBadge').innerText = this.selectedTier;
+
+                let heartsHTML = '';
+                for (let i = 0; i < 3; i++) {
+                    heartsHTML += i < this.hearts ? '❤️' : '🖤';
+                }
+                document.getElementById('heartsContainer').innerHTML = heartsHTML;
+
+                document.getElementById('scoreDisplay').innerText = this.score;
+                document.getElementById('streakDisplay').innerText = `🔥 ${this.streak}x`;
+
+                const progressPct = ((this.currentQIndex) / this.activeQuestions.length) * 100;
+                document.getElementById('progressBar').style.width = `${progressPct}%`;
+
+                // Update Hint Remaining Badge
+                const hintBadge = document.getElementById('hintRemainingBadge');
+                if (hintBadge) {
+                    hintBadge.innerText = `Quest Hints Left: ${this.totalQuestHintsRemaining}/3`;
+                }
+            }
+
+            loadCurrentQuestion() {
+                this.answered = false;
+                this.used5050ForCurrentQ = false;
+                this.usedTextHintForCurrentQ = false;
+
+                const q = this.activeQuestions[this.currentQIndex];
+
+                document.getElementById('currentQNum').innerText = this.currentQIndex + 1;
+                document.getElementById('totalQNum').innerText = this.activeQuestions.length;
+                document.getElementById('qCategoryTag').innerText = q.category;
+
+                document.getElementById('passageTitle').innerText = q.passageTitle || "Reading Passage";
+                document.getElementById('passageCategory').innerText = q.category;
+                document.getElementById('passageContent').innerText = q.passageContent || "Read carefully and choose the correct option.";
+
+                document.getElementById('questionText').innerText = q.questionText;
+
+                document.getElementById('hintBox').classList.add('hidden');
+                
+                // Refresh hint button states based on quest hint allowance
+                const canUseHint = this.totalQuestHintsRemaining > 0;
+                document.getElementById('hint5050Btn').disabled = !canUseHint;
+                document.getElementById('hintTextBtn').disabled = !canUseHint;
+
+                document.getElementById('explanationBox').classList.add('hidden');
+                document.getElementById('nextBtn').classList.add('hidden');
+
+                // Character Guidance Quote
+                const char = this.characters[this.selectedCharacter];
+                document.getElementById('guideAvatar').innerText = char.avatar;
+                document.getElementById('guideName').innerText = `${char.name} says:`;
+                document.getElementById('guideQuote').innerText = `"${char.quotes.welcome}"`;
+
+                const container = document.getElementById('choicesContainer');
+                container.innerHTML = '';
+
+                const labels = ['A', 'B', 'C', 'D'];
+                q.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.id = `choice-${idx}`;
+                    btn.onclick = () => this.selectChoice(idx);
+                    btn.className = `choice-btn w-full p-3 rounded-xl border-2 border-tropicalteal/40 bg-deepocean/90 hover:bg-darkocean text-left text-lightsand font-subheading text-xs sm:text-sm flex items-center justify-between transition transform active:scale-98 shadow-md`;
+                    btn.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <span class="w-6 h-6 rounded-lg bg-darkocean border border-tropicalteal/50 text-sandgold font-bold flex items-center justify-center text-xs">
+                                ${labels[idx]}
+                            </span>
+                            <span>${opt}</span>
+                        </div>
+                        <span class="status-icon"></span>
+                    `;
+                    container.appendChild(btn);
+                });
+
+                this.startTimer();
+            }
+
+            startTimer() {
+                if (this.timerInterval) clearInterval(this.timerInterval);
+                const maxSec = this.tierLimits[this.selectedTier] || 35;
+                this.timerSeconds = maxSec;
+
+                const ring = document.getElementById('timerRing');
+                const text = document.getElementById('timerText');
+                const circumference = 100;
+
+                const updateRing = () => {
+                    text.innerText = this.timerSeconds;
+                    const offset = circumference - (this.timerSeconds / maxSec) * circumference;
+                    ring.style.strokeDashoffset = offset;
+                };
+
+                updateRing();
+
+                this.timerInterval = setInterval(() => {
+                    this.timerSeconds--;
+                    updateRing();
+
+                    if (this.timerSeconds <= 0) {
+                        clearInterval(this.timerInterval);
+                        this.handleTimeout();
+                    }
+                }, 1000);
+            }
+
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            }
+
+            handleTimeout() {
+                if (this.answered) return;
+                this.selectChoice(-1);
+            }
+
+            useHint5050() {
+                if (this.answered || this.used5050ForCurrentQ || this.totalQuestHintsRemaining <= 0) return;
+                
+                this.used5050ForCurrentQ = true;
+                this.totalQuestHintsRemaining--;
+                document.getElementById('hint5050Btn').disabled = true;
+
+                const q = this.activeQuestions[this.currentQIndex];
+                const wrongIndices = [0, 1, 2, 3].filter(idx => idx !== q.correctIndex);
+                wrongIndices.sort(() => Math.random() - 0.5);
+                const toEliminate = wrongIndices.slice(0, 2);
+
+                toEliminate.forEach(idx => {
+                    const btn = document.getElementById(`choice-${idx}`);
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.classList.add('opacity-30', 'line-through');
+                    }
+                });
+
+                this.updateHUD();
+                soundManager.playHint();
+            }
+
+            useHintText() {
+                if (this.answered || this.usedTextHintForCurrentQ || this.totalQuestHintsRemaining <= 0) return;
+                
+                this.usedTextHintForCurrentQ = true;
+                this.totalQuestHintsRemaining--;
+                document.getElementById('hintTextBtn').disabled = true;
+
+                const q = this.activeQuestions[this.currentQIndex];
+                const char = this.characters[this.selectedCharacter];
+                document.getElementById('hintBoxText').innerText = `${char.name}'s Hint: ${q.hintText || char.quotes.hint}`;
+                document.getElementById('hintBox').classList.remove('hidden');
+
+                this.updateHUD();
+                soundManager.playHint();
+            }
+
+            selectChoice(selectedIndex) {
+                if (this.answered) return;
+                this.answered = true;
+                this.stopTimer();
+
+                const q = this.activeQuestions[this.currentQIndex];
+                const isCorrect = (selectedIndex === q.correctIndex);
+                const char = this.characters[this.selectedCharacter];
+
+                const correctBtn = document.getElementById(`choice-${q.correctIndex}`);
+
+                if (isCorrect) {
+                    soundManager.playCorrect();
+                    document.getElementById('guideQuote').innerText = `"${char.quotes.correct}"`;
+
+                    const chosenBtn = document.getElementById(`choice-${selectedIndex}`);
+                    chosenBtn.classList.remove('border-tropicalteal/40', 'bg-deepocean/90');
+                    chosenBtn.classList.add('border-green-400', 'bg-green-900/60', 'text-green-100');
+                    chosenBtn.querySelector('.status-icon').innerText = '✅';
+
+                    this.streak++;
+                    if (this.streak > this.bestStreak) this.bestStreak = this.streak;
+
+                    const multiplier = this.streak >= 5 ? 3 : (this.streak >= 3 ? 2 : 1);
+                    this.score += 100 * multiplier;
+
+                    if (this.streak % 3 === 0 && window.confetti) {
+                        confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } });
+                    }
+                } else {
+                    soundManager.playWrong();
+                    document.getElementById('guideQuote').innerText = `"${char.quotes.wrong}"`;
+
+                    if (selectedIndex >= 0) {
+                        const chosenBtn = document.getElementById(`choice-${selectedIndex}`);
+                        chosenBtn.classList.remove('border-tropicalteal/40', 'bg-deepocean/90');
+                        chosenBtn.classList.add('border-hibiscus', 'bg-red-900/60', 'text-red-100', 'shaking');
+                        chosenBtn.querySelector('.status-icon').innerText = '❌';
+                    }
+
+                    if (correctBtn) {
+                        correctBtn.classList.remove('border-tropicalteal/40');
+                        correctBtn.classList.add('border-green-400', 'bg-green-900/40');
+                    }
+
+                    this.streak = 0;
+                    this.hearts--;
+                }
+
+                // Show Explanation
+                const expBox = document.getElementById('explanationBox');
+                expBox.classList.remove('hidden', 'border-green-500', 'border-hibiscus', 'bg-green-950/60', 'bg-red-950/60');
+                if (isCorrect) {
+                    expBox.classList.add('border-green-500', 'bg-green-950/60', 'text-green-200');
+                    document.getElementById('explanationResultHeader').innerText = "✨ Correct Wayfinding!";
+                } else {
+                    expBox.classList.add('border-hibiscus', 'bg-red-950/60', 'text-red-200');
+                    document.getElementById('explanationResultHeader').innerText = selectedIndex === -1 ? "⏰ Time Expired!" : "⚠️ Course Correction";
+                }
+                document.getElementById('explanationText').innerText = q.explanation || "No explanation provided.";
+
+                document.querySelectorAll('.choice-btn').forEach(btn => btn.disabled = true);
+                this.updateHUD();
+                document.getElementById('nextBtn').classList.remove('hidden');
+            }
+
+            nextQuestion() {
+                if (this.hearts <= 0 || this.currentQIndex >= this.activeQuestions.length - 1) {
+                    this.finishOdyssey();
+                    return;
+                }
+
+                this.currentQIndex++;
+                this.loadCurrentQuestion();
+                this.updateHUD();
+                soundManager.playClick();
+            }
+
+            finishOdyssey() {
+                this.stopTimer();
+                soundManager.playVictory();
+
+                if (window.confetti) {
+                    confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+                }
+
+                const char = this.characters[this.selectedCharacter];
+                const total = this.activeQuestions.length;
+                const accuracy = Math.round((this.score / (total * 100)) * 100) || 0;
+
+                document.getElementById('resultCharacterAvatar').innerText = char.avatar;
+                document.getElementById('resultCharacterTitle').innerText = `${char.name}'s Wayfinder Blessing`;
+                document.getElementById('resultCharacterSpeech').innerText = `"${char.quotes.victory}"`;
+
+                document.getElementById('resScore').innerText = this.score;
+                document.getElementById('resAccuracy').innerText = `${accuracy}%`;
+                document.getElementById('resStreak').innerText = `🔥 ${this.bestStreak}`;
+
+                let heartStr = '';
+                for (let i = 0; i < 3; i++) heartStr += i < this.hearts ? '❤️' : '🖤';
+                document.getElementById('resHearts').innerText = heartStr;
+
+                if (this.hearts <= 0) {
+                    document.getElementById('resultHeaderIcon').innerText = '🌊';
+                    document.getElementById('congratsBadge').innerText = '🌴 Practice Builds Mastery!';
+                    document.getElementById('resultTitle').innerText = 'Voyage Completed!';
+                    document.getElementById('resultSubtitle').innerText = 'You ran out of hearts, but every attempt brings you closer to literacy success!';
+                    document.getElementById('resEncouragement').innerText = 'Review the passages and try again to strengthen your reading comprehension.';
+                } else {
+                    document.getElementById('resultHeaderIcon').innerText = '⛵';
+                    document.getElementById('congratsBadge').innerText = '🎉 Wayfinder Mastery Achieved!';
+                    document.getElementById('resultTitle').innerText = 'Quest Completed!';
+                    document.getElementById('resultSubtitle').innerText = `Congratulations, ${this.playerName}! You mastered the ALS reading comprehension module.`;
+                    document.getElementById('resEncouragement').innerText = 'Outstanding functional literacy skills! You are prepared for future ALS assessments.';
+                }
+
+                this.addLeaderboardEntry(this.playerName, char.avatar, this.selectedTier, this.score, accuracy);
+                this.showScreen('result');
+            }
+
+            /* LEADERBOARD & MODALS */
+            addLeaderboardEntry(name, avatar, tier, score, accuracy) {
+                const entry = { name, avatar, tier, score, accuracy, date: new Date().toLocaleDateString() };
+                this.leaderboard.push(entry);
+                this.leaderboard.sort((a, b) => b.score - a.score);
+                this.leaderboard = this.leaderboard.slice(0, 10);
+                this.saveLocalStorage();
+            }
+
+            openLeaderboard() {
+                const tbody = document.getElementById('leaderboardTbody');
+                tbody.innerHTML = '';
+
+                if (this.leaderboard.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-lightsand/60">No scores recorded yet. Complete a review quiz!</td></tr>`;
+                } else {
+                    const medals = ['🥇', '🥈', '🥉'];
+                    this.leaderboard.forEach((item, idx) => {
+                        const tr = document.createElement('tr');
+                        tr.className = "hover:bg-deepocean/50 transition";
+                        tr.innerHTML = `
+                            <td class="p-2 font-bold text-sandgold">${medals[idx] || (idx + 1)}</td>
+                            <td class="p-2 text-base">${item.avatar || '👩🏽‍🦱'}</td>
+                            <td class="p-2 font-bold">${item.name}</td>
+                            <td class="p-2 uppercase text-tropicalteal text-[10px]">${item.tier}</td>
+                            <td class="p-2 font-bold text-sandgold">${item.score}</td>
+                            <td class="p-2">${item.accuracy}%</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+
+                document.getElementById('leaderboardModal').classList.remove('hidden');
+            }
+
+            closeLeaderboard() {
+                document.getElementById('leaderboardModal').classList.add('hidden');
+            }
+
+            clearLeaderboard() {
+                if (confirm("Clear all rankings from leaderboard?")) {
+                    this.leaderboard = [];
+                    this.saveLocalStorage();
+                    this.openLeaderboard();
+                }
+            }
+
+            /* TEACHER STUDIO & BANNER EDITOR */
+            openTitleSettingsModal() {
+                document.getElementById('inputGameTitle').value = this.customTitle;
+                document.getElementById('inputHeaderSubtitle').value = this.customSubtitle;
+                document.getElementById('inputIntroBadge').value = this.customIntroBadge;
+                document.getElementById('inputWelcomeMsg').value = this.customWelcomeMsg;
+                document.getElementById('titleSettingsModal').classList.remove('hidden');
+            }
+
+            closeTitleSettingsModal() {
+                document.getElementById('titleSettingsModal').classList.add('hidden');
+            }
+
+            saveTitleSettings() {
+                this.customTitle = document.getElementById('inputGameTitle').value.trim() || "WAYFINDER ALS REVIEWER";
+                this.customSubtitle = document.getElementById('inputHeaderSubtitle').value.trim() || "Reading Comprehension & Functional Literacy";
+                this.customIntroBadge = document.getElementById('inputIntroBadge').value.trim() || "Alternative Learning System • DepEd Aligned";
+                this.customWelcomeMsg = document.getElementById('inputWelcomeMsg').value.trim() || "Set sail on an educational quest!";
+
+                this.saveLocalStorage();
+                this.updateUIBanner();
+                this.closeTitleSettingsModal();
+                soundManager.playClick();
+            }
+
+            openTeacherStudio() {
+                this.renderTeacherScoreMonitor();
+                this.renderQuestionBankTable();
+                document.getElementById('teacherStudioModal').classList.remove('hidden');
+            }
+
+            renderTeacherScoreMonitor() {
+                const tbody = document.getElementById('teacherScoreTableBody');
+                if (!tbody) return;
+                tbody.innerHTML = '';
+
+                if (this.leaderboard.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-3 text-center text-lightsand/60">No student scores logged yet.</td></tr>`;
+                    return;
+                }
+
+                this.leaderboard.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-deepocean/40 transition";
+                    tr.innerHTML = `
+                        <td class="p-2 font-bold text-sandgold">${item.name}</td>
+                        <td class="p-2 text-base">${item.avatar || '👩🏽‍🦱'}</td>
+                        <td class="p-2 uppercase text-tropicalteal font-bold">${item.tier}</td>
+                        <td class="p-2 font-bold">${item.score}</td>
+                        <td class="p-2 text-green-300 font-bold">${item.accuracy}%</td>
+                        <td class="p-2 text-lightsand/70">${item.date || 'Today'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            closeTeacherStudio() {
+                document.getElementById('teacherStudioModal').classList.add('hidden');
+            }
+
+            renderQuestionBankTable() {
+                document.getElementById('questionBankCount').innerText = this.questions.length;
+                const tbody = document.getElementById('questionTableBody');
+                tbody.innerHTML = '';
+
+                this.questions.forEach((q) => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-deepocean/50 transition";
+                    tr.innerHTML = `
+                        <td class="p-2.5 uppercase font-bold text-tropicalteal">${q.tier}</td>
+                        <td class="p-2.5 text-sandgold">${q.category}</td>
+                        <td class="p-2.5 text-lightsand max-w-xs truncate">${q.questionText}</td>
+                        <td class="p-2.5 text-center space-x-1">
+                            <button onclick="app.editQuestion('${q.id}')" class="px-2 py-0.5 bg-tropicalteal text-darkocean rounded font-bold text-[10px]">✏️ Edit</button>
+                            <button onclick="app.deleteQuestion('${q.id}')" class="px-2 py-0.5 bg-hibiscus text-lightsand rounded font-bold text-[10px]">🗑️ Delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            editQuestion(id) {
+                const q = this.questions.find(item => item.id === id);
+                if (!q) return;
+
+                document.getElementById('editQuestionId').value = q.id;
+                document.getElementById('formTier').value = q.tier;
+                document.getElementById('formCategory').value = q.category;
+                document.getElementById('formPassageTitle').value = q.passageTitle || '';
+                document.getElementById('formPassageContent').value = q.passageContent || '';
+                document.getElementById('formQuestionText').value = q.questionText;
+                document.getElementById('formOptA').value = q.options[0] || '';
+                document.getElementById('formOptB').value = q.options[1] || '';
+                document.getElementById('formOptC').value = q.options[2] || '';
+                document.getElementById('formOptD').value = q.options[3] || '';
+                document.getElementById('formCorrectIndex').value = q.correctIndex;
+                document.getElementById('formHintText').value = q.hintText || '';
+                document.getElementById('formExplanation').value = q.explanation || '';
+
+                document.getElementById('formModeTitle').innerText = "✏️ Edit Question";
+                document.getElementById('cancelEditBtn').classList.remove('hidden');
+            }
+
+            resetQuestionForm() {
+                document.getElementById('editQuestionId').value = '';
+                document.getElementById('formPassageTitle').value = '';
+                document.getElementById('formPassageContent').value = '';
+                document.getElementById('formQuestionText').value = '';
+                document.getElementById('formOptA').value = '';
+                document.getElementById('formOptB').value = '';
+                document.getElementById('formOptC').value = '';
+                document.getElementById('formOptD').value = '';
+                document.getElementById('formHintText').value = '';
+                document.getElementById('formExplanation').value = '';
+
+                document.getElementById('formModeTitle').innerText = "➕ Add New Question & Passage";
+                document.getElementById('cancelEditBtn').classList.add('hidden');
+            }
+
+            saveQuestionFromForm() {
+                const editId = document.getElementById('editQuestionId').value;
+                const tier = document.getElementById('formTier').value;
+                const category = document.getElementById('formCategory').value;
+                const passageTitle = document.getElementById('formPassageTitle').value.trim();
+                const passageContent = document.getElementById('formPassageContent').value.trim();
+                const questionText = document.getElementById('formQuestionText').value.trim();
+                const optA = document.getElementById('formOptA').value.trim();
+                const optB = document.getElementById('formOptB').value.trim();
+                const optC = document.getElementById('formOptC').value.trim();
+                const optD = document.getElementById('formOptD').value.trim();
+                const correctIndex = parseInt(document.getElementById('formCorrectIndex').value, 10);
+                const hintText = document.getElementById('formHintText').value.trim();
+                const explanation = document.getElementById('formExplanation').value.trim();
+
+                if (!questionText || !optA || !optB) {
+                    alert("Please enter a question prompt and options.");
+                    return;
+                }
+
+                const newObj = {
+                    id: editId || ("q_" + Date.now()),
+                    tier,
+                    category,
+                    passageTitle,
+                    passageContent,
+                    questionText,
+                    options: [optA, optB, optC, optD],
+                    correctIndex,
+                    hintText,
+                    explanation
+                };
+
+                if (editId) {
+                    const idx = this.questions.findIndex(q => q.id === editId);
+                    if (idx !== -1) this.questions[idx] = newObj;
+                } else {
+                    this.questions.push(newObj);
+                }
+
+                this.saveLocalStorage();
+                this.renderQuestionBankTable();
+                this.resetQuestionForm();
+                soundManager.playClick();
+            }
+
+            deleteQuestion(id) {
+                if (confirm("Delete this question from question bank?")) {
+                    this.questions = this.questions.filter(q => q.id !== id);
+                    this.saveLocalStorage();
+                    this.renderQuestionBankTable();
+                    soundManager.playClick();
+                }
+            }
+
+            resetDefaultQuestions() {
+                if (confirm("Reset question deck to default ALS set?")) {
+                    this.questions = [...DEFAULT_QUESTIONS];
+                    this.saveLocalStorage();
+                    this.renderQuestionBankTable();
+                    soundManager.playClick();
+                }
+            }
+
+            exportJSON() {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.questions, null, 2));
+                const dlAnchor = document.createElement('a');
+                dlAnchor.setAttribute("href", dataStr);
+                dlAnchor.setAttribute("download", "WAYFINDER_ALS_Deck.json");
+                document.body.appendChild(dlAnchor);
+                dlAnchor.click();
+                dlAnchor.remove();
+            }
+
+            exportCSV() {
+                let csv = "id,tier,category,passageTitle,questionText,optA,optB,optC,optD,correctIndex,hintText,explanation\n";
+                this.questions.forEach(q => {
+                    const esc = (s) => `"${(s || '').replace(/"/g, '""')}"`;
+                    csv += `${q.id},${q.tier},${esc(q.category)},${esc(q.passageTitle)},${esc(q.questionText)},${esc(q.options[0])},${esc(q.options[1])},${esc(q.options[2])},${esc(q.options[3])},${q.correctIndex},${esc(q.hintText)},${esc(q.explanation)}\n`;
+                });
+
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.setAttribute('href', url);
+                a.setAttribute('download', 'WAYFINDER_ALS_Deck.csv');
+                a.click();
+            }
+
+            importFile(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const parsed = JSON.parse(e.target.result);
+                        if (Array.isArray(parsed)) {
+                            this.questions = parsed;
+                            this.saveLocalStorage();
+                            this.renderQuestionBankTable();
+                            alert("Successfully imported custom questions!");
+                        }
+                    } catch(err) {
+                        alert("Error importing JSON file.");
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        let app;
+        window.onload = () => {
+            app = new WayfinderApp();
+        };
+    </script>
+</body>
+</html>
